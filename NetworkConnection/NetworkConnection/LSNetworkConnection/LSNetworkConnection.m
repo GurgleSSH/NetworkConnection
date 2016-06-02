@@ -72,10 +72,11 @@ NSString * const LSNetworkReachabilityStatusReachableViaWiFiNotification = @"LSN
         NSURLSession *session = [NSURLSession sharedSession];
         //在子线程请求数据
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
             //return main thread 返回主线程
             dispatch_async(dispatch_get_main_queue(), ^{
                 //analysis data 分析数据
-                if (data) {
+                if (httpResponse.statusCode == 200) {
                     NSData *jsonData = [NSData data];
                     id result;
                     NSError *error = nil;
